@@ -40,20 +40,36 @@
   <!-- End Matomo Code -->
 
   <script>
-  document.querySelectorAll('.track-item').forEach(button => {
-    button.addEventListener('click', function() {
-      const itemName = this.getAttribute('data-item-name');
-      const itemCategory = this.getAttribute('data-item-category');
-      const itemPrice = this.getAttribute('data-item-price');
+  var _paq = window._paq = window._paq || [];
 
-      // Track the click event with Matomo
-      _paq.push(['trackEvent', 'Ecommerce', 'Item Click', itemName, itemPrice, {
-        category: itemCategory,
-      }]);
-
-      console.log(`Tracked: ${itemName}, ${itemCategory}, $${itemPrice}`);
-    });
-  });
+  // Function to get the current visitor ID
+  function getVisitorId() {
+      var visitorId = _paq.push(['getVisitorId']);  // Get the visitor ID from Matomo
+      console.log("Visitor ID: ", visitorId); // Log the visitor ID to the console
+      return visitorId;
+  }
+  // Call this function when you need the visitor ID
+  var visitorId = getVisitorId();
   </script>
+
+  <script>
+    function trackProductView(dishId, dishName, categoryName, price) {
+      var visitorId = getVisitorId();  // Get the visitor ID
+
+      // Track product view with Matomo's ecommerce tracking
+      _paq.push(['setEcommerceView', dishId, dishName, categoryName, price]);
+    
+      // Send a custom event with visitor ID (Optional: This will track the visitor and item)
+      _paq.push(['trackEvent', 'Ecommerce', 'Product View', dishName, price, {
+          'visitor_id': visitorId  // You can include the visitor ID as a custom variable or label
+      }]);
+    
+      _paq.push(['trackPageView']);  // Track page view (showing the product page)
+  }
+
+  // Example: Tracking a product view
+  trackProductView('123', 'Pizza Margherita', 'Italian', 12.99);
+  </script>
+
 </body>
 </html>
