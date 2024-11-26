@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radio Button Item Selection</title>
+</head>
+<body>
+  <h1>Select an Item</h1>
+  <form id="itemForm">
+    <label>
+      <input type="radio" name="item" value="Product 1" data-category="Category A" data-price="19.99">
+      Product 1 - $19.99
+    </label><br>
+    <label>
+      <input type="radio" name="item" value="Product 2" data-category="Category B" data-price="29.99">
+      Product 2 - $29.99
+    </label><br>
+    <label>
+      <input type="radio" name="item" value="Product 3" data-category="Category C" data-price="39.99">
+      Product 3 - $39.99
+    </label><br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <!-- Matomo Tracking Code -->
+  <script>
+    var _paq = window._paq = window._paq || [];
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+      var u="https://your-matomo-url/"; // Replace with your Matomo URL
+      _paq.push(['setTrackerUrl', u+'matomo.php']);
+      _paq.push(['setSiteId', '1']); // Replace with your Matomo site ID
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+    })();
+  </script>
+  
+  <script>
+  document.querySelectorAll('.track-item').forEach(button => {
+    button.addEventListener('click', function() {
+      const itemName = this.getAttribute('data-item-name');
+      const itemCategory = this.getAttribute('data-item-category');
+      const itemPrice = this.getAttribute('data-item-price');
+
+      // Track the click event with Matomo
+      _paq.push(['trackEvent', 'Ecommerce', 'Item Click', itemName, itemPrice, {
+        category: itemCategory,
+      }]);
+
+      console.log(`Tracked: ${itemName}, ${itemCategory}, $${itemPrice}`);
+    });
+  });
+  </script>
+</body>
+</html>
