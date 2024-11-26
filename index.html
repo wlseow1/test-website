@@ -49,7 +49,7 @@
       return visitorId;
     }
 
-    function trackProductView(dishId, dishName, categoryName, price) {
+    function pushDataToMatomo(dishId, dishName, categoryName, price) {
       var visitorId = getVisitorId();  // Get the visitor ID
 
       // Track product view with Matomo's ecommerce tracking
@@ -64,7 +64,7 @@
     }
 
     // Example: Tracking a product view
-    trackProductView('123', 'Pizza Margherita', 'Italian', 12.99);
+    pushDataToMatomo('123', 'Pizza Margherita', 'Italian', 12.99);
   </script>
 
 </body>
