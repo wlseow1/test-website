@@ -40,19 +40,15 @@
   <!-- End Matomo Code -->
 
   <script>
-  var _paq = window._paq = window._paq || [];
+    var _paq = window._paq = window._paq || [];
 
-  // Function to get the current visitor ID
-  function getVisitorId() {
+    // Function to get the current visitor ID
+    function getVisitorId() {
       var visitorId = _paq.push(['getVisitorId']);  // Get the visitor ID from Matomo
       console.log("Visitor ID: ", visitorId); // Log the visitor ID to the console
       return visitorId;
-  }
-  // Call this function when you need the visitor ID
-  var visitorId = getVisitorId();
-  </script>
+    }
 
-  <script>
     function trackProductView(dishId, dishName, categoryName, price) {
       var visitorId = getVisitorId();  // Get the visitor ID
 
@@ -65,10 +61,10 @@
       }]);
     
       _paq.push(['trackPageView']);  // Track page view (showing the product page)
-  }
+    }
 
-  // Example: Tracking a product view
-  trackProductView('123', 'Pizza Margherita', 'Italian', 12.99);
+    // Example: Tracking a product view
+    trackProductView('123', 'Pizza Margherita', 'Italian', 12.99);
   </script>
 
 </body>
