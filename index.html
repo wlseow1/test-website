@@ -42,29 +42,51 @@
   <script>
     var _paq = window._paq = window._paq || [];
 
-    // Function to get the current visitor ID
-    function getVisitorId() {
-      var visitorId = _paq.push(['getVisitorId']);  // Get the visitor ID from Matomo
-      console.log("Visitor ID: ", visitorId); // Log the visitor ID to the console
-      return visitorId;
-    }
-
-    function pushDataToMatomo(dishId, dishName, categoryName, price) {
-      var visitorId = getVisitorId();  // Get the visitor ID
-
-      // Track product view with Matomo's ecommerce tracking
-      _paq.push(['setEcommerceView', dishId, dishName, categoryName, price]);
-    
-      // Send a custom event with visitor ID (Optional: This will track the visitor and item)
-      _paq.push(['trackEvent', 'Ecommerce', 'Product View', dishName, price, {
-          'visitor_id': visitorId  // You can include the visitor ID as a custom variable or label
+    // Function to get the Visitor ID
+    function getVisitorId(callback) {
+      _paq.push([function() {
+        var visitorId = this.getVisitorId();
+        console.log("Visitor ID: ", visitorId);
+        if (callback) callback(visitorId);
       }]);
-    
-      _paq.push(['trackPageView']);  // Track page view (showing the product page)
     }
 
-    // Example: Tracking a product view
-    pushDataToMatomo('123', 'Pizza Margherita', 'Italian', 12.99);
+    // Function to push data to Matomo
+    function pushDataToMatomo(dishId, dishName, categoryName, price) {
+      _paq.push(['setEcommerceView', dishId, dishName, categoryName, price]); // Track product view
+      _paq.push(['trackEvent', 'Ecommerce', 'Product View', dishName, price]); // Log custom event
+      console.log('Product tracked: ${dishName} (${dishId}) - ${categoryName} - $${price}');
+    }
+
+    // Track radio button selections dynamically
+    document.getElementById('itemForm').addEventListener('change', function(event) {
+      if (event.target.name === 'item') { // Ensure it's the radio button
+        const selectedItem = event.target;
+        const dishId = selectedItem.value;
+        const categoryName = selectedItem.getAttribute('data-category');
+        const price = parseFloat(selectedItem.getAttribute('data-price'));
+
+        // Log the selection to Matomo
+        pushDataToMatomo(dishId, dishId, categoryName, price);
+      }
+    });
+
+    // Track form submissions
+    document.getElementById('itemForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent actual form submission for demo purposes
+      const selectedItem = document.querySelector('input[name="item"]:checked');
+
+      if (selectedItem) {
+        const dishId = selectedItem.value;
+        const categoryName = selectedItem.getAttribute('data-category');
+        const price = parseFloat(selectedItem.getAttribute('data-price'));
+
+        _paq.push(['trackEvent', 'Ecommerce', 'Form Submit', dishId, price]);
+        console.log('Form submitted:', dishId, categoryName, price);
+      } else {
+        console.warn('No item selected');
+      }
+    });
   </script>
 
 </body>
